@@ -47,12 +47,18 @@ function Index() {
         ? await supabase.auth.signInWithPassword({ email, password })
         : await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin } });
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     if (mode === "register" && !data.session) toast.success(t("checkEmail"));
   };
 
   const forgot = async () => {
-    if (!email) return toast.error(t("email"));
+    if (!email) {
+      toast.error(t("email"));
+      return;
+    }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });

@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { DICTS } from "./languages";
 
 type Ctx = { lang: string; setLang: (l: string) => void; t: (k: string) => string };
-const I18n = createContext<Ctx>({ lang: "en", setLang: () => {}, t: (k) => DICTS.en[k] ?? k });
+const I18n = createContext<Ctx>({ lang: "en", setLang: () => {}, t: (k) => DICTS["en"]?.[k] ?? k });
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [lang, setLangState] = useState("en");
@@ -14,7 +14,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     setLangState(l);
     localStorage.setItem("riseher-lang", l);
   };
-  const t = (k: string) => DICTS[lang]?.[k] ?? DICTS.en[k] ?? k;
+  const t = (k: string) => DICTS[lang]?.[k] ?? DICTS["en"]?.[k] ?? k;
   return <I18n.Provider value={{ lang, setLang, t }}>{children}</I18n.Provider>;
 }
 
